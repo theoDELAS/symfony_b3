@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Profile{% endblock %}
+
+{% block body %}
+<section class="row my-4">
+    <div class="col-3">
+        <img class="img-fluid" src="{{ user.avatar ? asset(user.avatar) : 'http://placehold.it/300x300' }}" alt="Avatar">
+    </div>
+    <div class="col-9">
+        <h2>{{ user.firstname }} {{ user.lastname }}</h2>
+        <p>Inscrit le {{ user.dateInscription | date('d/m/Y') }}</p>
+        {% if user.description %}
+            <p>{{ user.description }}</p>
+        {% endif %}
+        {% if app.user == user %}
+            {% if user.description %}
+                <a class="btn btn-warning" href="{{ path('edit_user', {id: app.user.id}) }}">Modifier la description</a>
+            {% else %}
+                <a class="btn btn-success" href="{{ path('edit_user', {id: app.user.id}) }}">Ajouter une description</a>
+            {% endif %}
+        {% endif %}
+    </div>
+</section>
+<section>
+    <ul>
+        {% for game in user.games %}
+            <li><a href="{{ path('game_details', { id: game.id }) }}">{{ game.name }}</a></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
